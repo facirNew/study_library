@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>В жанре {{ genre }} следующие книги:</p>
+{% for book in books %}
+    <p><a href="{% url 'book_info' book %}">{{ book }} </a></p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for author in authors %}
+    <p><a href="{% url 'author_books' author %}" >{{ author }}</a></p>
+{% endfor %}
+{% endblock %}
