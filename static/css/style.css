@@ -1,0 +1,21 @@
+body {
+background-image: url(../img/old-piper.jpg);
+background-repeat: no-repeat;
+background-size: cover;
+color: black;
+}
+
+.link {
+font-size: 1.2rem;
+color:black;
+border-bottom:1px dashed #b0b0b0;
+background:url(../img/read-book-icon.png) no-repeat;
+background-size:19px;
+padding-left:20px;
+margin-bottom:10px;
+}
+
+p {
+font-size: 1.4rem;
+color:black;
+}
