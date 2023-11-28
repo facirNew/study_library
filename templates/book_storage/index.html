@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Приветсвтую Вас в учебной библиотеке! </h1>
-<p><a href="{% url 'genres' %}">Жанры</a></p>
-<p><a href="{% url 'authors' %}">Авторы</a></p>
-<p><a href="{% url 'books' %}">Книги</a></p>
+<h1>Приветствтую Вас в учебной библиотеке! </h1>
+<p><a class="link" href="{% url 'genres' %}">Жанры</a></p>
+<p><a class="link" href="{% url 'authors' %}">Авторы</a></p>
+<p><a class="link" href="{% url 'books' %}">Книги</a></p>
 {% endblock %}

@@ -1,13 +1,51 @@
 <!DOCTYPE html>
-
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <link href="{% static 'css/bootstrap_style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'img/read-book-icon.png' %}">
 </head>
 <body>
-<a href='/'> На главную </a>
+
+{% block navibar %}
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="https://www.python.org/"><img src="{% static 'img/python-logo-only.png' %}"
+                                            width="25" height="30" alt="python"></a>
+        <div class="collapse navbar-collapse" id="navbarsExample02">
+            <ul class="navbar-nav me-auto">
+
+                {% for elem in menu %}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url elem.url %}">{{ elem.name }}</a>
+                </li>
+                {% endfor %}
+
+            </ul>
+            <form role="search">
+                <input type="text" class="form-control mr-sm-2" placeholder="Поиск" aria-label="Поиск">
+            </form>
+            {% if request.user.is_authenticated %}
+				<a href="/admin/"><button class="btn btn-outline-light mr-2" >{{ user.username }}</button></a>
+            {% endif %}
+            {% for item in login_menu %}
+				<a href="{% url item.url_name %}" class="btn btn-outline-light mr-2">{{ item.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+  </nav>
+{% endblock navibar %}
+
 {% block content %}
-{% endblock %}
+{% endblock content %}
+
+{% block footer %}
+
+{% endblock footer %}
+
+<script src="{% static 'js/bootstrap_js.js' %}"></script>
 </body>
 </html>

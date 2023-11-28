@@ -2,6 +2,6 @@
 
 {% block content %}
 {% for genre in genres %}
-    <p><a href="{% url 'genre_books' genre %}" >{{ genre }}</a></p>
+    <p><a class="link" href="{% url 'genre_books' genre %}" >{{ genre }}</a></p>
 {% endfor %}
 {% endblock %}

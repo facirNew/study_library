@@ -3,6 +3,6 @@
 {% block content %}
 <p>В жанре {{ genre }} следующие книги:</p>
 {% for book in books %}
-    <p><a href="{% url 'book_info' book %}">{{ book }} </a></p>
+    <p><a class="link" href="{% url 'book_info' book %}">{{ book }} </a></p>
 {% endfor %}
 {% endblock %}
