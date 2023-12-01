@@ -5,7 +5,7 @@ from book_storage import views
 urlpatterns = [
     path('author/<slug:author_name>/', views.author_books, name='author_books'),
     path('genres/<slug:genre_name>/', views.genre_books, name='genre_books'),
-    path('books/<str:book_name>/', views.book_info, name='book_info'),
+    path('books/<slug:book_name>/', views.book_info, name='book_info'),
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
     path('add_book/', views.add_book, name='add_book'),

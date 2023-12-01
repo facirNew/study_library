@@ -1,18 +1,9 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 
-book_list = [
-    {'name': 'some_book_0', 'genre': 'some_genre_1', 'author': 'some_author_1'},
-    {'name': 'some_book_1', 'genre': 'some_genre_2', 'author': 'some_author_2'},
-    {'name': 'some_book_2', 'genre': 'some_genre_3', 'author': 'some_author_3'},
-    {'name': 'some_book_3', 'genre': 'some_genre_2', 'author': 'some_author_4'},
-    {'name': 'some_book_4', 'genre': 'some_genre_1', 'author': 'some_author_5'},
-    {'name': 'some_book_5', 'genre': 'some_genre_2', 'author': 'some_author_1'},
-    {'name': 'some_book_6', 'genre': 'some_genre_3', 'author': 'some_author_2'},
-    {'name': 'some_book_7', 'genre': 'some_genre_2', 'author': 'some_author_3'},
-    {'name': 'some_book_8', 'genre': 'some_genre_1', 'author': 'some_author_4'},
-    {'name': 'some_book_9', 'genre': 'some_genre_2', 'author': 'some_author_5'},
-]
+from .models import *
+
 login_menu = [{'title': 'Вход', 'url_name': 'signin'},
               {'title': 'Регистрация', 'url_name': 'signup'},
               ]
@@ -25,21 +16,17 @@ context = {'menu': menu, 'login_menu': login_menu}
 
 
 def index(request):
-    book_name = request.GET.get('name', '')
-    book_genre = request.GET.get('genre', '')
-    book_author = request.GET.get('author', '')
-    if book_author and book_name and book_genre:
-        book = {'name': book_name, 'genre': book_genre, 'author': book_author}
-        if not any(book['name'] == b['name'] for b in book_list):
-            book_list.append(book)
+    book_list = Book.objects.all().order_by('?')[:10]
+    context['books'] = book_list
     return TemplateResponse(request, 'book_storage/index.html', context=context)
 
 
 def genres(request):
-    genre_set = set()
-    for book in book_list:
-        genre_set.add(book['genre'])
-    context['genres'] = genre_set
+    page_number = request.GET.get('page')
+    genres_list = Genre.objects.all().order_by('name')
+    paginator = Paginator(genres_list, 10)
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
     return TemplateResponse(request, 'book_storage/genres.html', context=context)
 
 
@@ -57,24 +44,17 @@ def books(request):
 
 
 def book_info(request, book_name):
-    current_book = {}
-    for book in book_list:
-        if book['name'] == book_name:
-            current_book = book
-
-    context['name'] = current_book['name']
-    context['author'] = current_book['author']
-    context['genre'] = current_book['genre']
+    current_book = Book.objects.get(slug=book_name)
+    context['book'] = current_book
     return render(request, 'book_storage/book_info.html', context=context)
 
 
 def genre_books(request, genre_name):
-    current_books = []
-    for book in book_list:
-        if book['genre'] == genre_name:
-            current_books.append(book['name'])
-    context['books'] = current_books
-    context['genre'] = genre_name
+    page_number = request.GET.get('page')
+    current_books = Book.objects.filter(genre__slug=genre_name)
+    paginator = Paginator(current_books, 10)
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
     return render(request, 'book_storage/genre_books.html', context=context)
 
 
