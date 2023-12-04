@@ -9,7 +9,8 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
     path('add_book/', views.add_book, name='add_book'),
-    re_path(r'^authors', views.authors, name='authors'),
+    re_path(r'^author', views.authors, name='authors'),
+
     re_path(r'^genres', views.genres, name='genres'),
     re_path(r'^books', views.books, name='books'),
     re_path(r'^', views.index, name='home'),

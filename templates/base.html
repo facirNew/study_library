@@ -38,20 +38,22 @@
     </div>
 </nav>
 {% endblock navibar %}
+<div class="wrapper">
+    <div class="content">
+        {% block content %}
+        {% endblock content %}
+    </div>
 
-{% block content %}
-{% endblock content %}
-
-{% block footer %}
-<div class="footer">
-    <footer class="py-5">
-        <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-            <p>2023 Учебный сайт-библиотека, информация взята из открытых источников.</p>
+    {% block footer %}
+        <div class="footer">
+            <footer class="py-5">
+                <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+                    <p>2023 Учебный сайт-библиотека, информация взята из открытых источников.</p>
+                </div>
+            </footer>
         </div>
-    </footer>
+    {% endblock footer %}
 </div>
-{% endblock footer %}
-
 <script src="{% static 'js/bootstrap_js.js' %}"></script>
 </body>
 </html>

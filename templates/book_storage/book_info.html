@@ -2,7 +2,14 @@
 
 {% block content %}
 <p>Информация о книге:</p>
-<p>Название: {{ name }}</p>
-<p>Жанр: {{ genre }}</p>
-<p>Автор: {{ author }}</p>
+<p>Название: {{ book.title }}</p>
+<img src="{{ book.cover }}">
+<p>Жанр:</p>
+{% for genre in book.genre.all %}
+ <p>-{{ genre }}</p>
+{% endfor %}
+
+<p>Автор: {{ book.author }}</p>
+<p>Описание:</p>
+<p>{{ book.description|linebreaks }}</p>
 {% endblock %}

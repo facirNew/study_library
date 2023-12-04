@@ -13,7 +13,7 @@ class Author(models.Model):
 
 class Genre(models.Model):
     name = models.CharField(max_length=100, verbose_name='Жанры')
-    slug = models.SlugField(verbose_name='URL')
+    slug = models.SlugField(verbose_name='URL', db_index=True)
 
     def __str__(self):
         return self.name
@@ -36,7 +36,7 @@ class Book(models.Model):
     class Meta:
         ordering = ['title', 'author']
         indexes = [
-            models.Index(fields=['title'])
+            models.Index(fields=['slug'])
         ]
 
     def __str__(self):

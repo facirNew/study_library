@@ -1,8 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>У автора {{ author }} следующие книги:</p>
-{% for book in books %}
-    <p><a class="link" href="{% url 'book_info' book %}">{{ book }} </a></p>
+<p>Книги автора {{ author }}</p>
+{% for book in page_obj %}
+    <p><a class="link" href="{% url 'book_info' book.slug %}">{{ book.title }} </a></p>
 {% endfor %}
+{% if not page_obj %}
+<p>Нет книг в этом жанре</p>
+{% endif %}
+{% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1"><<</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number}}"><</a>
+                </li>
+            {% endif %}
+            {% for page in page_obj.paginator.page_range %}
+                {% if page_obj.number == page %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">>></a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
 {% endblock %}

@@ -2,7 +2,8 @@
 
 {% block content %}
 <h1>Приветствтую Вас в учебной библиотеке! </h1>
-<p><a class="link" href="{% url 'genres' %}">Жанры</a></p>
-<p><a class="link" href="{% url 'authors' %}">Авторы</a></p>
-<p><a class="link" href="{% url 'books' %}">Книги</a></p>
+<h3>Десять случайных книг:</h3>
+{% for book in books %}
+<p><a class='link' href="{% url 'book_info' book.slug %}">{{ book }}</a></p>
+{% endfor %}
 {% endblock %}

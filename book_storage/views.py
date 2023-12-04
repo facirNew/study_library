@@ -31,10 +31,11 @@ def genres(request):
 
 
 def authors(request):
-    author_set = set()
-    for book in book_list:
-        author_set.add(book['author'])
-    context['authors'] = author_set
+    page_number = request.GET.get('page')
+    authors_list = Author.objects.all().order_by('name')
+    paginator = Paginator(authors_list, 10)
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
     return render(request, 'book_storage/authors.html', context=context)
 
 
@@ -54,17 +55,20 @@ def genre_books(request, genre_name):
     current_books = Book.objects.filter(genre__slug=genre_name)
     paginator = Paginator(current_books, 10)
     page_obj = paginator.get_page(page_number)
+    genre = Genre.objects.get(slug=genre_name)
     context['page_obj'] = page_obj
+    context['genre'] = genre.name
     return render(request, 'book_storage/genre_books.html', context=context)
 
 
 def author_books(request, author_name):
-    current_books = []
-    for book in book_list:
-        if book['author'] == author_name:
-            current_books.append(book['name'])
-    context['books'] = current_books
-    context['author'] = author_name
+    page_number = request.GET.get('page')
+    current_book = Book.objects.filter(author__slug=author_name)
+    paginator = Paginator(current_book, 10)
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
+    author = Author.objects.get(slug=author_name)
+    context['author'] = author.name
     return render(request, 'book_storage/author_book.html', context=context)
 
 
