@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for book in books %}
-    <p><a class="link" href="{% url 'book_info' book.name %}">{{ book.name }}</a></p>
+<p>Все книги:</p>
+{% for book in page_obj %}
+    <p><a class="link" href="{% url 'book_info' book.slug %}">{{ book.title }} </a></p>
 {% endfor %}
+{% if not page_obj %}
+<p>Нет книг в этом жанре</p>
+{% endif %}
+{% include 'book_storage/pagination.html' %}
 {% endblock %}

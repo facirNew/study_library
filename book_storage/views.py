@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.http import HttpResponseNotFound
+from django.shortcuts import render, get_object_or_404
 from django.template.response import TemplateResponse
 
 from .models import *
@@ -11,12 +12,13 @@ menu = [
     {'url': 'home', 'name': 'На главную'},
     {'url': 'authors', 'name': 'Авторы'},
     {'url': 'genres', 'name': 'Жанры'},
+    {'url': 'books', 'name': 'Книги'},
 ]
 context = {'menu': menu, 'login_menu': login_menu}
 
 
 def index(request):
-    book_list = Book.objects.all().order_by('?')[:10]
+    book_list = Book.objects.filter(status='AW').order_by('?')[:10]
     context['books'] = book_list
     return TemplateResponse(request, 'book_storage/index.html', context=context)
 
@@ -24,7 +26,7 @@ def index(request):
 def genres(request):
     page_number = request.GET.get('page')
     genres_list = Genre.objects.all().order_by('name')
-    paginator = Paginator(genres_list, 10)
+    paginator = Paginator(genres_list, 20)
     page_obj = paginator.get_page(page_number)
     context['page_obj'] = page_obj
     return TemplateResponse(request, 'book_storage/genres.html', context=context)
@@ -33,19 +35,23 @@ def genres(request):
 def authors(request):
     page_number = request.GET.get('page')
     authors_list = Author.objects.all().order_by('name')
-    paginator = Paginator(authors_list, 10)
+    paginator = Paginator(authors_list, 20)
     page_obj = paginator.get_page(page_number)
     context['page_obj'] = page_obj
     return render(request, 'book_storage/authors.html', context=context)
 
 
 def books(request):
-    context['books'] = book_list
+    page_number = request.GET.get('page')
+    book_list = Book.objects.all()
+    paginator = Paginator(book_list, 20)
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
     return render(request, 'book_storage/books.html', context=context)
 
 
 def book_info(request, book_name):
-    current_book = Book.objects.get(slug=book_name)
+    current_book = get_object_or_404(Book, slug=book_name)
     context['book'] = current_book
     return render(request, 'book_storage/book_info.html', context=context)
 
@@ -82,4 +88,3 @@ def signin(request):
 
 def add_book(request):
     return render(request, 'book_storage/add_book.html', context=context)
-
