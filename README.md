@@ -1,3 +1,4 @@
+![New Bitmap Image](https://github.com/facirNew/study_library/assets/118748152/36b0e00e-63a6-427c-9f9e-bc7886f005ab)
 # Библиотека
 Проект для изучения Django. Представляет из себя сайт-библиотеку с описанием 
 книг разных жанров и авторов.
