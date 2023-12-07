@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.template.response import TemplateResponse
@@ -18,7 +19,7 @@ context = {'menu': menu, 'login_menu': login_menu}
 
 
 def index(request):
-    book_list = Book.objects.filter(status='AW').order_by('?')[:10]
+    book_list = Book.available.all().order_by('?')[:10]
     context['books'] = book_list
     return TemplateResponse(request, 'book_storage/index.html', context=context)
 
@@ -43,7 +44,7 @@ def authors(request):
 
 def books(request):
     page_number = request.GET.get('page')
-    book_list = Book.objects.all()
+    book_list = Book.available.all()
     paginator = Paginator(book_list, 20)
     page_obj = paginator.get_page(page_number)
     context['page_obj'] = page_obj
@@ -58,7 +59,7 @@ def book_info(request, book_name):
 
 def genre_books(request, genre_name):
     page_number = request.GET.get('page')
-    current_books = Book.objects.filter(genre__slug=genre_name)
+    current_books = Book.available.filter(genre__slug=genre_name)
     paginator = Paginator(current_books, 10)
     page_obj = paginator.get_page(page_number)
     genre = Genre.objects.get(slug=genre_name)
@@ -69,7 +70,7 @@ def genre_books(request, genre_name):
 
 def author_books(request, author_name):
     page_number = request.GET.get('page')
-    current_book = Book.objects.filter(author__slug=author_name)
+    current_book = Book.available.filter(author__slug=author_name)
     paginator = Paginator(current_book, 10)
     page_obj = paginator.get_page(page_number)
     context['page_obj'] = page_obj
@@ -88,3 +89,17 @@ def signin(request):
 
 def add_book(request):
     return render(request, 'book_storage/add_book.html', context=context)
+
+
+def search(request):
+    find = request.GET.get('search')
+    context['find_book'] = Book.available.filter(Q(title__contains=find.lower())
+                                                 | Q(title__contains=find.title())
+                                                 | Q(title__contains=find.upper()))
+    context['find_author'] = Author.objects.filter(Q(name__contains=find.lower())
+                                                   | Q(name__contains=find.title())
+                                                   | Q(name__contains=find.upper()))
+    context['find_genres'] = Genre.objects.filter(Q(name__contains=find.lower())
+                                                  | Q(name__contains=find.title())
+                                                  | Q(name__contains=find.upper()))
+    return render(request, 'book_storage/search.html', context=context)

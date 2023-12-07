@@ -1,1 +1,29 @@
 {% extends 'base.html' %}
+{% block content %}
+<p>Книги по Вашему запросу:</p>
+{% if find_book %}
+{% for book in find_book %}
+<a class="link" href="{{ book.get_absolute_url }}">{{ book.title }} </a><br>
+{% endfor %}
+{% else %}
+Ничего не найдено!<br>
+{% endif %}
+<br>
+<p>Авторы по Вашему запросу:</p>
+{% if find_author %}
+{% for author in find_author %}
+<a class="link" href="{% url 'author_books' author.slug %}" >{{ author.name }}</a><br>
+{% endfor %}
+{% else %}
+Ничего не найдено!<br>
+{% endif %}
+<br>
+<p>Жанры по Вашему запросу:</p>
+{% if find_genres %}
+{% for genre in find_genres %}
+<a class="link" href="{% url 'genre_books' genre.slug %}" >{{ genre.name }}</a><br>
+{% endfor %}
+{% else %}
+Ничего не найдено!<br>
+{% endif %}
+{% endblock %}
