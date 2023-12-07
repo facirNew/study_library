@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.template.response import TemplateResponse
@@ -91,4 +92,14 @@ def add_book(request):
 
 
 def search(request):
+    find = request.GET.get('search')
+    context['find_book'] = Book.available.filter(Q(title__contains=find.lower())
+                                                 | Q(title__contains=find.title())
+                                                 | Q(title__contains=find.upper()))
+    context['find_author'] = Author.objects.filter(Q(name__contains=find.lower())
+                                                   | Q(name__contains=find.title())
+                                                   | Q(name__contains=find.upper()))
+    context['find_genres'] = Genre.objects.filter(Q(name__contains=find.lower())
+                                                  | Q(name__contains=find.title())
+                                                  | Q(name__contains=find.upper()))
     return render(request, 'book_storage/search.html', context=context)
