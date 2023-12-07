@@ -3,7 +3,7 @@
 {% block content %}
 <p>В жанре {{ genre|lower }} следующие книги:</p>
 {% for book in page_obj %}
-    <p><a class="link" href="{% url 'book_info' book.slug %}">{{ book.title }} </a></p>
+    <p><a class="link" href="{{ book.get_absolute_url }}">{{ book.title }} </a></p>
 {% endfor %}
 {% if not page_obj %}
 <p>Нет книг в этом жанре</p>

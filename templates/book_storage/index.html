@@ -4,6 +4,6 @@
 <h1>Приветствтую Вас в учебной библиотеке! </h1>
 <h3>Десять случайных книг:</h3>
 {% for book in books %}
-<p><a class='link' href="{% url 'book_info' book.slug %}">{{ book }}</a></p>
+<p><a class='link' href="{{ book.get_absolute_url }}">{{ book }}</a></p>
 {% endfor %}
 {% endblock %}

@@ -1,5 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
+
+class StatusManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status='AW')
 
 
 class Author(models.Model):
@@ -33,6 +39,9 @@ class Book(models.Model):
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.AVAILABLE, verbose_name='Статус')
     comment = models.ManyToManyField(User, through='Comment', verbose_name='Комментарии')
 
+    available = StatusManager()
+    objects = models.Manager()
+
     class Meta:
         ordering = ['title', 'author']
         indexes = [
@@ -41,6 +50,9 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('book_info', kwargs={'book_name': self.slug})
 
 
 class Comment(models.Model):
