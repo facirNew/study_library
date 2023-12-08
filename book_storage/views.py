@@ -6,8 +6,8 @@ from django.template.response import TemplateResponse
 
 from .models import *
 
-login_menu = [{'title': 'Вход', 'url_name': 'signin'},
-              {'title': 'Регистрация', 'url_name': 'signup'},
+login_menu = [{'title': 'Вход', 'url_name': 'users:signin'},
+              {'title': 'Регистрация', 'url_name': 'users:signup'},
               ]
 menu = [
     {'url': 'home', 'name': 'На главную'},
@@ -77,14 +77,6 @@ def author_books(request, author_name):
     author = Author.objects.get(slug=author_name)
     context['author'] = author.name
     return render(request, 'book_storage/author_book.html', context=context)
-
-
-def signup(request):
-    return render(request, 'book_storage/auth.html', context=context)
-
-
-def signin(request):
-    return render(request, 'book_storage/signin.html', context=context)
 
 
 def add_book(request):
