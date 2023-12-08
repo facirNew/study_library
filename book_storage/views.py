@@ -6,16 +6,7 @@ from django.template.response import TemplateResponse
 
 from .models import *
 
-login_menu = [{'title': 'Вход', 'url_name': 'users:signin'},
-              {'title': 'Регистрация', 'url_name': 'users:signup'},
-              ]
-menu = [
-    {'url': 'home', 'name': 'На главную'},
-    {'url': 'authors', 'name': 'Авторы'},
-    {'url': 'genres', 'name': 'Жанры'},
-    {'url': 'books', 'name': 'Книги'},
-]
-context = {'menu': menu, 'login_menu': login_menu}
+context = {}
 
 
 def index(request):

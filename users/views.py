@@ -5,17 +5,6 @@ from django.urls import reverse
 
 from .forms import LoginUserForm
 
-login_menu = [{'title': 'Вход', 'url_name': 'users:signin'},
-              {'title': 'Регистрация', 'url_name': 'users:signup'},
-              ]
-menu = [
-    {'url': 'home', 'name': 'На главную'},
-    {'url': 'authors', 'name': 'Авторы'},
-    {'url': 'genres', 'name': 'Жанры'},
-    {'url': 'books', 'name': 'Книги'},
-]
-context = {'menu': menu, 'login_menu': login_menu}
-
 
 def signin(request):
     if request.method == 'POST':
@@ -28,7 +17,7 @@ def signin(request):
                 return HttpResponseRedirect(reverse('home'))
     else:
         form = LoginUserForm()
-    context['form'] = form
+    context = {'form': form}
     return render(request, 'users/signin.html', context=context)
 
 
