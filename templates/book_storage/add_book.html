@@ -1,1 +1,9 @@
 {% extends 'base.html' %}
+{% block content %}
+<h1>Добавить книгу</h1>
+{% if not request.user.is_authenticated %}
+    <h2>Войдите или зарегистрируйтесь для продолжения</h2>
+{% else %}
+    <h2>В разработке</h2>
+{% endif %}
+{% endblock %}

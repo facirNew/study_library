@@ -6,6 +6,8 @@ menu = [
     {'url': 'authors', 'name': 'Авторы'},
     {'url': 'genres', 'name': 'Жанры'},
     {'url': 'books', 'name': 'Книги'},
+    {'url': 'add_book', 'name': 'Добавить книгу'}
+
 ]
 context = {'menu': menu, 'login_menu': login_menu}
 

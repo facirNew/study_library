@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-
+# TODO slug unique=True
 class StatusManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status='AW')

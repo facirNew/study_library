@@ -2,8 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
-from .forms import LoginUserForm
+from .forms import *
 
 
 def signin(request):
@@ -22,7 +21,17 @@ def signin(request):
 
 
 def signup(request):
-    return HttpResponse('signup')
+    if request.method == 'POST':
+        form = RegUserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return render(request, 'users/register_done.html')
+    else:
+        form = RegUserForm()
+    context = {'form': form}
+    return render(request, 'users/signup.html', context=context)
 
 
 def logout_user(request):
