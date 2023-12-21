@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.template.response import TemplateResponse
-
+from .forms import AddBookForm
 from .models import *
 
 context = {}
@@ -70,6 +70,14 @@ def author_books(request, author_name):
 
 
 def add_book(request):
+    if request.method == 'POST':
+        form = AddBookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'book_storage/add_book_done.html', context=context)
+    else:
+        form = AddBookForm
+    context['form'] = form
     return render(request, 'book_storage/add_book.html', context=context)
 
 

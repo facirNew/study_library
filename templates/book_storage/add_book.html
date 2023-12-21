@@ -4,6 +4,12 @@
 {% if not request.user.is_authenticated %}
     <h2>Войдите или зарегистрируйтесь для продолжения</h2>
 {% else %}
-    <h2>В разработке</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <p><button type="submit">Добавить книгу</button></p>
+    </form>
 {% endif %}
 {% endblock %}

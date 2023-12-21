@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from pytils.translit import slugify
+
 
 # TODO slug unique=True
 class StatusManager(models.Manager):
@@ -53,6 +55,10 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         return reverse('book_info', kwargs={'book_name': self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
 
 class Comment(models.Model):
